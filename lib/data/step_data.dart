@@ -1,5 +1,5 @@
-import 'package:cradock_map/models/path_step.dart';
-import 'package:latlong2/latlong.dart';
+import "package:cradock_map/models/path_step.dart";
+import "package:latlong2/latlong.dart";
 
 class StepData {
   static final List<PathStep> steps = [
@@ -8,7 +8,9 @@ class StepData {
         zoom: 15,
         name: "Langeais",
         description: "Début du voyage en Touraine",
-        references: ["https://www.wikidata.org/wiki/Q383360", ],
+        references: [
+          "https://www.wikidata.org/wiki/Q383360",
+        ],
         position: const LatLng(47.325556, 0.406111)),
     PathStep(
         id: 2,
@@ -21,28 +23,32 @@ class StepData {
         id: 3,
         zoom: 15,
         name: "Tours - pont",
-        description: "Pont de Tours (rive nord = bas de la tranchée actuelle). Il faudrait \"dessiner\" le pont à son emplacement de 1785 (seul le vieux pont figure sur la carte geoportail)",
+        description:
+            "Pont de Tours (rive nord = bas de la tranchée actuelle). Il faudrait \"dessiner\" le pont à son emplacement de 1785 (seul le vieux pont figure sur la carte geoportail)",
         references: [],
         position: const LatLng(47.399029, 0.685568)),
     PathStep(
         id: 4,
         zoom: 15,
         name: "Tours - Hôtel du faisan",
-        description: "en haut de l’actuelle rue Nationale, côté Ouest, à l’emplacement de l’actuel café Feuillette ou de la Boîte à Livres",
+        description:
+            "en haut de l’actuelle rue Nationale, côté Ouest, à l’emplacement de l’actuel café Feuillette ou de la Boîte à Livres",
         references: [],
         position: const LatLng(47.395091, 0.686619)),
     PathStep(
         id: 5,
         zoom: 15,
         name: "Tours – Cathédrale et archevêché",
-        description: "en haut de l’actuelle rue Nationale, côté Ouest, à l’emplacement de l’actuel café Feuillette ou de la Boîte à Livres",
+        description:
+            "en haut de l’actuelle rue Nationale, côté Ouest, à l’emplacement de l’actuel café Feuillette ou de la Boîte à Livres",
         references: [],
         position: const LatLng(47.39557, 0.694235)),
     PathStep(
         id: 6,
         zoom: 15,
         name: "Tours – les mails",
-        description: "ce sont les actuels boulevards Béranger et Heurteloup / sur la carte Géoportail c’est toute la bordure crénelée qui borde la ville au sud et à l’est (je l'ai mise en jaune)",
+        description:
+            "ce sont les actuels boulevards Béranger et Heurteloup / sur la carte Géoportail c’est toute la bordure crénelée qui borde la ville au sud et à l’est (je l'ai mise en jaune)",
         references: [],
         position: const LatLng(47.391124, 0.695232)),
     PathStep(

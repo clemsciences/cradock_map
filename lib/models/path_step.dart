@@ -1,4 +1,4 @@
-import 'package:latlong2/latlong.dart';
+import "package:latlong2/latlong.dart";
 
 class PathStep {
   final int id;
@@ -15,5 +15,4 @@ class PathStep {
       required this.references,
       required this.position,
       required this.zoom});
-
 }

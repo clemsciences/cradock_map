@@ -1,7 +1,3 @@
-
-
 class WebManager {
-  static launchUrl(Uri url) {
-
-  }
+  static void launchUrl(Uri url) {}
 }

@@ -1,6 +1,4 @@
-
-
-import 'package:flutter/material.dart';
+import "package:flutter/material.dart";
 
 class DiskWidget extends StatelessWidget {
   final double radius;
@@ -34,11 +32,10 @@ class DiskPainter extends CustomPainter {
     canvas.drawCircle(Offset(radius, radius), radius, innerPaint);
 
     final edgePain = Paint()
-    ..color = color.withAlpha(alpha)
-    ..strokeWidth = 2
-    ..style = PaintingStyle.stroke;
+      ..color = color.withAlpha(alpha)
+      ..strokeWidth = 2
+      ..style = PaintingStyle.stroke;
     canvas.drawCircle(Offset(radius, radius), radius, edgePain);
-
   }
 
   @override

@@ -1,22 +1,15 @@
-import 'dart:async';
-import 'dart:ui';
-
-import 'package:cradock_map/data/app_data.dart';
-import 'package:cradock_map/data/tile_provider_data.dart';
-import 'package:cradock_map/managers/web_manager.dart';
-import 'package:cradock_map/models/view_mode.dart';
-import 'package:cradock_map/notifiers/app_state_notifier.dart';
-import 'package:cradock_map/ui/buttons/zoom_buttons.dart';
-import 'package:cradock_map/ui/image_tile.dart';
-import 'package:cradock_map/ui/marker.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_animations/flutter_map_animations.dart';
-import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:provider/provider.dart';
+import "package:cradock_map/data/app_data.dart";
+import "package:cradock_map/data/tile_provider_data.dart";
+import "package:cradock_map/managers/web_manager.dart";
+import "package:cradock_map/notifiers/app_state_notifier.dart";
+import "package:cradock_map/ui/image_tile.dart";
+import "package:cradock_map/ui/marker.dart";
+import "package:flutter/material.dart";
+import "package:flutter_map/flutter_map.dart";
+import "package:flutter_map_animations/flutter_map_animations.dart";
+import "package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart";
+import "package:latlong2/latlong.dart";
+import "package:provider/provider.dart";
 
 class TouraineMap extends StatefulWidget {
   final GlobalKey mapKey;
@@ -180,8 +173,10 @@ class _TouraineMapState extends State<TouraineMap>
                           onTap: () {},
                           position: appStateNotifier.selectedSteps[0].position,
                           withCarrosse: appStateNotifier.withCarrosse),
-                    if (appStateNotifier.showAllMarkers /*&&
-                        appStateNotifier.viewMode == ViewMode.balade*/)
+                    if (appStateNotifier
+                            .showAllMarkers /*&&
+                        appStateNotifier.viewMode == ViewMode.balade*/
+                        )
                       for (var marker in appStateNotifier.steps)
                         SatMarker(
                             position: marker.position,
@@ -189,17 +184,22 @@ class _TouraineMapState extends State<TouraineMap>
                             withCarrosse: appStateNotifier.withCarrosse,
                             width: 40,
                             height: 40),
-                    if(appStateNotifier.withPostHouses)
-                      for(var marker in appStateNotifier.postHouses)
-                        SatMarker(position: marker, onTap: () {}, withCarrosse: true, width: 40, height: 40)
+                    if (appStateNotifier.withPostHouses)
+                      for (var marker in appStateNotifier.postHouses)
+                        SatMarker(
+                            position: marker,
+                            onTap: () {},
+                            withCarrosse: true,
+                            width: 40,
+                            height: 40)
                   ]),
                   RichAttributionWidget(
                     // Include a stylish prebuilt attribution widget that meets all requirments
                     attributions: [
                       TextSourceAttribution(
-                        'OpenStreetMap contributors',
+                        "OpenStreetMap contributors",
                         onTap: () => WebManager.launchUrl(Uri.parse(
-                            'https://openstreetmap.org/copyright')), // (external)
+                            "https://openstreetmap.org/copyright")), // (external)
                       ),
                       // Also add images...
                     ],

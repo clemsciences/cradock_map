@@ -1,17 +1,11 @@
-
-
-import 'package:flutter/foundation.dart' show kIsWeb;
-
-
-import 'dart:typed_data';
-import 'dart:ui';
-
-
-import 'package:web/web.dart' as web;
 import "dart:js_interop" as js;
+import "dart:typed_data";
+import "dart:ui";
 
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import "package:flutter/foundation.dart" show kIsWeb;
+import "package:flutter/material.dart";
+import "package:flutter/rendering.dart";
+import "package:web/web.dart" as web;
 
 class PrintMapButton extends StatelessWidget {
   final GlobalKey mapKey;
@@ -24,11 +18,9 @@ class PrintMapButton extends StatelessWidget {
         onPressed: () async {
           var i = await captureMapAsImage();
           if (i != null) {
-            if(kIsWeb) {
+            if (kIsWeb) {
               openImageInNewTab(i);
-            } else {
-
-            }
+            } else {}
           }
         },
         child: const Text("Imprimer"));
@@ -48,7 +40,7 @@ class PrintMapButton extends StatelessWidget {
     final blob = web.Blob([imageBytes] as js.JSArray<web.BlobPart>,
         web.BlobPropertyBag(type: "image/png"));
     final url = web.URL.createObjectURL(blob);
-    web.window.open(url, '_blank');
+    web.window.open(url, "_blank");
   }
 
 // void openImageWithAutoPrint(Uint8List imageBytes) {

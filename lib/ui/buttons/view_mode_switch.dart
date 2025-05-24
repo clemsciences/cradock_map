@@ -1,7 +1,7 @@
-import 'package:cradock_map/models/view_mode.dart';
-import 'package:cradock_map/notifiers/app_state_notifier.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import "package:cradock_map/models/view_mode.dart";
+import "package:cradock_map/notifiers/app_state_notifier.dart";
+import "package:flutter/material.dart";
+import "package:provider/provider.dart";
 
 class ViewModeRadioButton extends StatelessWidget {
   const ViewModeRadioButton({super.key});
@@ -14,7 +14,7 @@ class ViewModeRadioButton extends StatelessWidget {
           Flexible(
             flex: 1,
             child: RadioListTile<ViewMode>(
-              title: const Text("Mode balade"),
+                title: const Text("Mode balade"),
                 value: ViewMode.balade,
                 groupValue: multiNotifier.viewMode,
                 onChanged: (newValue) {
@@ -24,14 +24,13 @@ class ViewModeRadioButton extends StatelessWidget {
           Flexible(
             flex: 1,
             child: RadioListTile<ViewMode>(
-              title: const Text("Mode séquence"),
+                title: const Text("Mode séquence"),
                 value: ViewMode.sequence,
                 groupValue: multiNotifier.viewMode,
                 onChanged: (newValue) {
                   multiNotifier.updateViewMode(newValue!);
                 }),
           ),
-
         ],
       );
     });

@@ -1,8 +1,7 @@
-import 'dart:math';
+import "dart:math";
 
-import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_map_animations/flutter_map_animations.dart';
+import "package:flutter/material.dart";
+import "package:flutter_map/flutter_map.dart";
 
 class ZoomButtons extends StatelessWidget {
   final double minZoom;
@@ -46,9 +45,9 @@ class ZoomButtons extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding:
-            EdgeInsets.only(left: padding, top: padding, right: padding),
+                EdgeInsets.only(left: padding, top: padding, right: padding),
             child: FloatingActionButton(
-              heroTag: 'zoomInButton',
+              heroTag: "zoomInButton",
               mini: mini,
               backgroundColor: zoomInColor ?? theme.primaryColor,
               onPressed: () {
@@ -62,7 +61,7 @@ class ZoomButtons extends StatelessWidget {
           Padding(
             padding: EdgeInsets.all(padding),
             child: FloatingActionButton(
-              heroTag: 'zoomOutButton',
+              heroTag: "zoomOutButton",
               mini: mini,
               backgroundColor: zoomOutColor ?? theme.primaryColor,
               onPressed: () {

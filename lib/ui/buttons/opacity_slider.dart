@@ -1,6 +1,6 @@
-import 'package:cradock_map/notifiers/app_state_notifier.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import "package:cradock_map/notifiers/app_state_notifier.dart";
+import "package:flutter/material.dart";
+import "package:provider/provider.dart";
 
 class OpacitySlider extends StatelessWidget {
   const OpacitySlider({super.key});

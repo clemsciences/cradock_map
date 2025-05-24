@@ -1,7 +1,4 @@
-
-
 enum ViewMode {
   balade,
   sequence,
-
 }
