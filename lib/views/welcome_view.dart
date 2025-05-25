@@ -13,7 +13,7 @@ class WelcomeView extends StatelessWidget {
           children: [
             NavBar(),
             Image.asset(
-              "icons/SAT-couleur-1000.png",
+              "assets/icons/SAT-couleur-1000.png",
               height: 300,
             ),
             SizedBox(
