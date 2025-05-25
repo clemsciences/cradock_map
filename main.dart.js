@@ -40903,7 +40903,7 @@ A.uC.prototype={
 L(a){return new A.zR("Cradock - s\xe9quence",null)}}
 A.nu.prototype={
 L(a){var s=null
-return A.aeg(s,new A.px(A.ih(A.b([new A.pt(s),A.avZ("icons/SAT-couleur-1000.png",300,s),A.fB(s,80,s),A.aeY("Bienvenue sur le site de Mme Cradock en Touraine",A.a0(a).ok.d)],t.D),B.ad,B.aS,B.aC),s))}}
+return A.aeg(s,new A.px(A.ih(A.b([new A.pt(s),A.avZ("assets/icons/SAT-couleur-1000.png",300,s),A.fB(s,80,s),A.aeY("Bienvenue sur le site de Mme Cradock en Touraine",A.a0(a).ok.d)],t.D),B.ad,B.aS,B.aC),s))}}
 A.l0.prototype={
 aK(){return null}}
 A.a_6.prototype={}
