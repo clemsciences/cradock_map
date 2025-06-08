@@ -7,11 +7,13 @@ class ReferencesView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PageLayout(
-      child: Column(
-        children: [
-          NavBar(),
-        ],
+    return Scaffold(
+      body: PageLayout(
+        child: Column(
+          children: [
+            NavBar(),
+          ],
+        ),
       ),
     );
   }

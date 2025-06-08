@@ -9,7 +9,7 @@ import "package:cradock_map/ui/buttons/show_all_markers_switch.dart";
 import "package:cradock_map/ui/buttons/switch_button.dart";
 import "package:cradock_map/ui/buttons/view_mode_switch.dart";
 import "package:cradock_map/ui/buttons/web/print_map_button.dart";
-import "package:cradock_map/ui/map.dart";
+import "package:cradock_map/ui/map/map.dart";
 import "package:cradock_map/ui/nav_bar.dart";
 import "package:cradock_map/ui/page_layout.dart";
 import "package:flutter/material.dart";

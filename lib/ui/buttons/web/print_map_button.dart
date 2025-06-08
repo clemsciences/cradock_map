@@ -1,3 +1,5 @@
+@js.JS()
+library print_map_button;
 import "dart:js_interop" as js;
 import "dart:typed_data";
 import "dart:ui";
