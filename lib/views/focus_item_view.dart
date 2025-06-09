@@ -2,7 +2,6 @@ import "dart:math";
 
 import "package:cradock_map/models/focus_item.dart";
 import "package:cradock_map/routes/routes.dart";
-import "package:cradock_map/style/style.dart";
 import "package:cradock_map/ui/images/sat_gallery.dart";
 import "package:cradock_map/ui/images/sat_image.dart";
 import "package:cradock_map/ui/nav_bar.dart";
@@ -26,7 +25,7 @@ class FocusItemView extends StatelessWidget {
       body: PageLayout(
           child: Center(
         child: SizedBox(
-          width: min(MediaQuery.of(context).size.width, 1000),
+          width: min(MediaQuery.of(context).size.width, 1300),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -76,13 +75,16 @@ class FocusItemView extends StatelessWidget {
                 ),
               for (var part in focusItem.parts)
                 if (MediaQuery.of(context).size.width > 800)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ...buildPart(context, part),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ...buildPart(context, part),
+                      ],
+                    ),
                   )
                 else
                   SizedBox(
@@ -103,6 +105,21 @@ class FocusItemView extends StatelessWidget {
   // It is inside a row
   List<Widget> buildPart(BuildContext context, FocusItemPart part) {
     return switch (part.type) {
+      PartType.subtitle => [
+          if (part.subtitle.isNotEmpty)
+            Expanded(
+                child: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SelectableText.rich(
+                  TextSpan(children: [TextSpan(text: part.subtitle)]),
+                  style: Theme.of(context).textTheme.headlineMedium,
+                )
+              ],
+            ))
+        ],
       PartType.normalParagprah => [
           Expanded(
             child: Padding(
@@ -115,24 +132,36 @@ class FocusItemView extends StatelessWidget {
           )
         ],
       PartType.paragraphWithLeftImage => [
-          SatImage(assetName: part.imagePath!),
           Expanded(
-              child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: SelectableText.rich(
-                    TextSpan(children: [
-                      TextSpan(
-                        text: part.text,
-                      )
-                    ]),
-                    textAlign: TextAlign.justify,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  )))
+            child: Padding(
+              padding:  EdgeInsets.only(left: 8),
+              child: Row(
+                children: [
+                  MySatImage(
+                    assetName: part.imagePath!,
+                    legend: part.legend ?? "",
+                  ),
+                  Expanded(
+                      child: Padding(
+                          padding: EdgeInsets.all(16.0),
+                          child: SelectableText.rich(
+                            TextSpan(children: [
+                              TextSpan(
+                                text: part.text,
+                              )
+                            ]),
+                            textAlign: TextAlign.justify,
+                            style: Theme.of(context).textTheme.bodyLarge,
+                          )))
+                ],
+              ),
+            ),
+          ),
         ],
       PartType.paragraphWithRightImage => [
           Expanded(
               child: Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding:  EdgeInsets.only(left: 8),
                   child: SelectableText.rich(
                     TextSpan(children: [
                       TextSpan(
@@ -142,26 +171,22 @@ class FocusItemView extends StatelessWidget {
                     textAlign: TextAlign.justify,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ))),
-          SatImage(
+          MySatImage(
             assetName: part.imagePath!,
+            legend: part.legend ?? "",
           ),
         ],
       PartType.onlyImage => [
-          Stack(children: [
-            Align(
-                alignment: Alignment.center,
-                child: SatImage(assetName: part.imagePath!)),
-            if (part.legend != null)
-              Align(
-                alignment: Alignment.bottomCenter,
-                child: SelectableText(part.legend!),
-              )
-          ]),
+          MySatImage(
+            padding:  EdgeInsets.only(left: 8),
+            assetName: part.imagePath!,
+            legend: part.legend ?? "",
+          )
         ],
       PartType.citation => [
           Expanded(
               child: Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding:  EdgeInsets.only(left: 8),
                   child: SelectableText.rich(
                       TextSpan(children: [
                         TextSpan(
@@ -173,27 +198,35 @@ class FocusItemView extends StatelessWidget {
         ],
       PartType.gallery => [
           Expanded(
-              child: Container(
-                  height: 400,
-                  child: Stack(children: [
-                    Align(
-                        alignment: Alignment.center,
-                        child: SatGallery(assetNames: part.gallery!)),
-                    if (part.legend != null)
-                      Align(
-                        alignment: Alignment.bottomCenter,
-                        child: Container(
-                            padding: EdgeInsets.all(8.0),
-                            decoration: BoxDecoration(
-                              color: SatStyle.lightBlueColor.withOpacity(0.9),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: SelectableText(
-                              part.legend!,
-                              style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.white)
-                            )),
-                      )
-                  ]))),
+            child: Container(
+              height: 600,
+              padding:  EdgeInsets.only(left: 8),
+              child: SatGallery(
+                assetNames: part.gallery!,
+                legend: part.legend,
+              ),
+            ),
+          ),
+          // Stack(children: [
+          //   Align(
+          //       alignment: Alignment.center,
+          //       child: ),
+          //   if (part.legend != null)
+          //     Align(
+          //       alignment: Alignment.bottomCenter,
+          //       child: Container(
+          //           padding: EdgeInsets.all(8.0),
+          //           decoration: BoxDecoration(
+          //             color: SatStyle.lightBlueColor.withOpacity(0.9),
+          //             borderRadius: BorderRadius.circular(10.0),
+          //           ),
+          //           child: SelectableText(part.legend!,
+          //               style: Theme.of(context)
+          //                   .textTheme
+          //                   .labelMedium
+          //                   ?.copyWith(color: Colors.white))),
+          //     )
+          // ]),
 
           // Column(children: [
           //   for(var imagePath in part.gallery!)
@@ -223,11 +256,35 @@ class FocusItemView extends StatelessWidget {
                   }
                 : null,
           )
-        ]
+        ],
+      PartType.summary => [
+        Align(
+          alignment: Alignment.topLeft,
+          child: SelectableText.rich(TextSpan(
+            children: [
+              for(var item in focusItem.parts.where((item) => item.subtitle.isNotEmpty))
+                TextSpan(
+                  text: "${item.subtitle}\n",
+                  recognizer: TapGestureRecognizer()
+                    ..onTap = () {
+                    goToPart(context, item);
+                    },
+                  style: TextStyle(
+                    decoration: TextDecoration.underline,
+                    color: Colors.blue,
+                  ))
+            ]
+          )),
+        )
+      ]
     };
   }
 
   String getAuthorsHeadline() {
     return focusItem.author!.map((item) => item.normalizedName).join(", ");
+  }
+
+  void goToPart(BuildContext context, FocusItemPart item) {
+
   }
 }
