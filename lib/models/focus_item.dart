@@ -10,7 +10,8 @@ enum PartType {
   gallery,
   navigation,
   summary,
-  subtitle
+  subtitle,
+  space
 }
 
 class FocusItemPart {
@@ -98,10 +99,14 @@ class FocusItemPart {
       required String legend}) {
     return FocusItemPart(
         text: text,
-        type: PartType.paragraphWithLeftImage,
+        type: PartType.paragraphWithRightImage,
         imagePath: imagePath,
         legend: legend,
         key: GlobalKey());
+  }
+
+  factory FocusItemPart.space() {
+    return FocusItemPart(text: "", type: PartType.space, key: GlobalKey());
   }
 }
 

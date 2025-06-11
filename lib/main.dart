@@ -1,6 +1,5 @@
 import "package:cradock_map/notifiers/multi_notifier.dart";
 import "package:cradock_map/routes/routes.dart";
-import "package:cradock_map/style/style.dart";
 import "package:cradock_map/style/themes.dart";
 import "package:flutter/material.dart";
 

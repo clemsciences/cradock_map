@@ -8,7 +8,7 @@ var cradockFamily = FocusItem(
       FocusItemPart.navigation(),
       FocusItemPart.summary([]),
       FocusItemPart.subtitle("Origine"),
-      FocusItemPart.paragraphWithLeftImage(
+      FocusItemPart.paragraphWithRightImage(
           text:
               "Joseph et Anna Francisca Cradock sont originaire du milieu de l’Angleterre dans les comtés de Leicester et de Warwick.",
           imagePath: "assets/focus/2-family/carte-angleterre.jpeg",
@@ -20,7 +20,7 @@ var cradockFamily = FocusItem(
           imagePath: "assets/focus/2-family/merevale-hall.jpg",
           legend: "Merevale Hall"),
       FocusItemPart.subtitle("Famille de Mme Cradock"),
-      FocusItemPart.paragraphWithRightImage(
+      FocusItemPart.paragraphWithLeftImage(
           legend:
               "Acte de naissance d'Anna Francisca Stratford (future Cradock)",
           imagePath:
@@ -30,20 +30,20 @@ var cradockFamily = FocusItem(
 Elle est la 3e d’une fratrie de 5 enfants :un garçon, James, décédé à l’âge de 4 ans et 4 filles, Sarah, Anna Francisca, Maria et Pénélope Bates.
 Son père décède en 1762, âgé de 56 ans."""),
       FocusItemPart.subtitle("Mariage des Cradock"),
-      FocusItemPart.paragraphWithLeftImage(
+      FocusItemPart.paragraphWithRightImage(
           legend: "Joseph Cradock",
           imagePath: "assets/focus/2-family/joseph-cradock.gif",
           text:
               "En 1765, elle épouse Joseph Cradock, gentleman farmer fort riche. Elle lui apporte la somme de 5000 livres que son père lui a légué par testament."),
       FocusItemPart.subtitle("Dr Heberden"),
-      FocusItemPart.paragraphWithRightImage(
+      FocusItemPart.paragraphWithLeftImage(
           legend: "Le portait du docteur Heberden",
           imagePath: "assets/focus/2-family/dr-heberden.jpg",
           text:
               """De santé fragile et suite à une crise de paralysie, c’est sur les conseils du Dr William Heberden qu’ils entreprennent ce long et intéressant voyage dans le sud de la France, en Flandre et en Hollande.
 Le Dr Heberden est l’un des plus éminents médecins anglais du XVIIIe siècle et rhumatologue à qui l’on doit l’Arthrose d'Heberden."""),
       FocusItemPart.subtitle("Fin de Mme Cradock"),
-      FocusItemPart.paragraphWithLeftImage(
+      FocusItemPart.paragraphWithRightImage(
           legend: "",
           imagePath: "assets/focus/2-family/gumley-hall.jpg",
           text:
@@ -51,13 +51,13 @@ Le Dr Heberden est l’un des plus éminents médecins anglais du XVIIIe siècle
               "Elle descendait le dernier escalier, son livre de prières à la main, pour se rendre à l'église, parla à la servante et tomba aussitôt, probablement prise d'une crise ; "
               "on lui trouva cependant une fracture importante à la tête. Elle est morte sur le coup."),
       FocusItemPart.subtitle("Famille de Mme Cradock"),
-      FocusItemPart.paragraphWithRightImage(
+      FocusItemPart.paragraphWithLeftImage(
           imagePath: "assets/focus/2-family/cradock-genealogie.jpg",
           legend: "",
           text:
               """Joseph Cradock est le représentant d'une branche cadette d'une famille liée depuis de nombreuses années à la ville de Leicester. Seul fils survivant de Joseph Cradock, bonnetier et drapier, et de sa première épouse, Mary, fille de l'échevin Annice, il nait à Leicester le 9 janvier 1742."""),
       FocusItemPart.subtitle("Les Cradock et la vaccination"),
-      FocusItemPart.paragraphWithLeftImage(
+      FocusItemPart.paragraphWithRightImage(
           legend: "église St Martin, Leicester",
           imagePath: "assets/focus/2-family/cradock-vaccination.jpg",
           text:
@@ -66,7 +66,7 @@ Le Dr Heberden est l’un des plus éminents médecins anglais du XVIIIe siècle
         imagePath: "assets/focus/2-family/saint-martin-leicester.jpg",
       ),
       FocusItemPart.subtitle("Décès des parents"),
-      FocusItemPart.paragraphWithRightImage(
+      FocusItemPart.paragraphWithLeftImage(
           imagePath: "assets/focus/2-family/sepulture-joseph-cradock.jpeg",
           legend: "sépulture de Joseph Cradock",
           text:
@@ -76,6 +76,7 @@ Le Dr Heberden est l’un des plus éminents médecins anglais du XVIIIe siècle
         "assets/focus/2-family/gumley-hall-2.jpg",
         "assets/focus/2-family/gumley-hall-3.jpg",
       ], "Gumley Hall"),
+      FocusItemPart.space(),
       FocusItemPart.normalParagraph(
           text:
               "En 1764, il dépense – huit mille livres, dit-on – pour (re)construire Gumley Hall et aménager les jardins sur le modèle de ceux de Saint-Cloud."),

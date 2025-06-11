@@ -16,7 +16,7 @@ class FocusItemTile extends StatelessWidget {
       title: item.title,
       subtitle: item.parts
           .map((i) => i.subtitle)
-          .where((item) => item != null && item.isNotEmpty)
+          .where((item) => item.isNotEmpty)
           .join(", "),
       onTap: () {
         context.go(AppRoutes.getFocusItemRoute(item));

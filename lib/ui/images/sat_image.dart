@@ -224,6 +224,7 @@ class _MySatImageState extends State<MySatImage> {
                     Align(
                             alignment: Alignment.bottomCenter,
                             child: Container(
+                                margin: EdgeInsets.all(16),
                                 padding: EdgeInsets.all(8.0),
                                 decoration: BoxDecoration(
                                   color: SatStyle.lightBlueColor.withOpacity(0.9),
@@ -232,7 +233,7 @@ class _MySatImageState extends State<MySatImage> {
                                 child: SelectableText(widget.legend,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .labelMedium
+                                        .labelLarge
                                         ?.copyWith(color: Colors.white))))
                       // Align(
                       //   alignment: Alignment.bottomCenter,

@@ -396,7 +396,7 @@ nous traita on ne peut mieux. A souper, elle nous
 servit une dinde supérieurement rôtie.
 La soirée étant merveilleuse, nous allions à huit
 heures et demie faire un tour sur le mail, prome-
-nade sablée longeant la rivière et plantée de deu\
+nade sablée longeant la rivière et plantée de deux
 rangées d'ormeaux si épais, qu'ils ne laissent
 pénétrer ni le soleil, ni le vent. A dix heures, nous
 nous mettions au lit.

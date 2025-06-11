@@ -8,7 +8,7 @@ var langeaisToCinqMars = FocusItem(
     parts: [
       FocusItemPart.navigation(),
       FocusItemPart.subtitle("Texte du journal de Mme Cradock"),
-      FocusItemPart.paragraphWithLeftImage(
+      FocusItemPart.paragraphWithRightImage(
           legend: "Gavure du château",
           text: """
 Langeais, mercredi 14 septembre 1785.

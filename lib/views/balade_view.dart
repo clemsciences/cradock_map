@@ -1,5 +1,4 @@
 
-import "package:cradock_map/ui/nav_bar.dart";
 import "package:flutter/material.dart";
 
 import "map_view.dart";
