@@ -41,3 +41,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Videos of the presentation, too large for GitHub (> 100 MB)
+assets/focus/*.mp4

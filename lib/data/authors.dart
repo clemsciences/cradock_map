@@ -7,12 +7,15 @@ var emilieTrebuchet = Author(firstName: "Emilie", familyName: "Trébuchet", biog
 var alainPauquet = Author(firstName: "Alain", familyName: "Pauquet", biography: null, bibliography: null);
 var martineBonnin = Author(firstName: "Martine", familyName: "Bonnin", biography: null, bibliography: null);
 var anneDebalMorche = Author(firstName: "Anne", familyName: "Debal-Morche", biography: null, bibliography: null);
+var philippeRouillac = Author(firstName: "Philippe", familyName: "Rouillac", biography: null, bibliography: null);
 
 var authors = [
   florenceCailleau,
   patrickRanger,
   isabelleGiraut,
+  emilieTrebuchet,
   alainPauquet,
   martineBonnin,
-  anneDebalMorche
+  anneDebalMorche,
+  philippeRouillac
 ];
