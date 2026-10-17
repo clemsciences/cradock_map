@@ -87,6 +87,7 @@ flutter:
     - assets/images/extrait.jpg
     - assets/images/carrosse.png
     - assets/icons/SAT-couleur-1000.png
+    - assets/data/communes.geojson
     - assets/focus/1-edition/
     - assets/focus/2-family/
 
