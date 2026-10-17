@@ -90,6 +90,18 @@ flutter:
     - assets/data/communes.geojson
     - assets/focus/1-edition/
     - assets/focus/2-family/
+    - assets/focus/3-langeais-chateau/
+    - assets/focus/4-chaise-de-poste/
+    - assets/focus/5-pont-neuf/
+    - assets/focus/6-rue-royale/
+    - assets/focus/7-hotel-du-faisan/
+    - assets/focus/8-cathedrale/
+    - assets/focus/9-archeveche/
+    - assets/focus/10-manuscrits/
+    - assets/focus/11-mails/
+    - assets/focus/12-saint-martin/
+    - assets/focus/13-marmoutier/
+    - assets/focus/14-chanteloup/
     - assets/previews/focus/1-edition/
     - assets/previews/focus/2-family/
     - assets/previews/focus/3-langeais-chateau/

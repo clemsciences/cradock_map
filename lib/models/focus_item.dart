@@ -1,4 +1,5 @@
 import "package:cradock_map/models/author.dart";
+import "package:cradock_map/models/text.dart";
 import "package:flutter/material.dart";
 
 enum PartType {
@@ -11,7 +12,8 @@ enum PartType {
   navigation,
   summary,
   subtitle,
-  space
+  space,
+  quote
 }
 
 class FocusItemPart {
@@ -103,6 +105,22 @@ class FocusItemPart {
         imagePath: imagePath,
         legend: legend,
         key: GlobalKey());
+  }
+
+  /// An excerpt of a source text, shown in italics with its [source] below.
+  factory FocusItemPart.quote(String text, {required String source}) {
+    return FocusItemPart(
+        text: text, legend: source, type: PartType.quote, key: GlobalKey());
+  }
+
+  /// Passages of Mme Cradock's journal (see CradockTextData), with their
+  /// dates and pages.
+  factory FocusItemPart.journal(List<JournalPassage> passages) {
+    final first = passages.first.firstPage;
+    final last = passages.last.lastPage;
+    final pages = first == last ? "p. $first" : "p. $first-$last";
+    return FocusItemPart.quote(JournalPassage.quoteOf(passages),
+        source: "Journal de Mme Cradock, $pages");
   }
 
   factory FocusItemPart.space() {

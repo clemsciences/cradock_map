@@ -2,8 +2,8 @@ import "dart:math";
 
 import "package:cradock_map/models/focus_item.dart";
 import "package:cradock_map/routes/routes.dart";
+import "package:cradock_map/ui/images/my_sat_image.dart";
 import "package:cradock_map/ui/images/sat_gallery.dart";
-import "package:cradock_map/ui/images/sat_image.dart";
 import "package:cradock_map/ui/nav_bar.dart";
 import "package:cradock_map/ui/page_layout.dart";
 import "package:flutter/gestures.dart";
@@ -18,91 +18,80 @@ class FocusItemView extends StatelessWidget {
 
   static const EdgeInsets mainLeftPadding = EdgeInsets.only(left: 16);
   static const int MAX_WIDTH_FOR_ROW = 800;
+  static const double MAX_PAGE_WIDTH = 1300;
+  static const double COMPACT_WIDTH = 600;
+  static const double MAX_GALLERY_HEIGHT = 600;
 
-  final ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController =
+      ScrollController(initialScrollOffset: 0);
+
+  static bool isCompact(BuildContext context) =>
+      MediaQuery.sizeOf(context).width < COMPACT_WIDTH;
+
+  /// Justified text leaves large gaps on a narrow column.
+  static TextAlign bodyTextAlign(BuildContext context) =>
+      isCompact(context) ? TextAlign.start : TextAlign.justify;
 
   @override
   Widget build(BuildContext context) {
-    print(
-        "MediaQuery.of(context).size.width: ${MediaQuery.of(context).size.width}");
+    final width = MediaQuery.sizeOf(context).width;
     return Scaffold(
       body: PageLayout(
           scrollController: _scrollController,
           child: Center(
             child: SizedBox(
-              width: min(MediaQuery.of(context).size.width, 1300),
+              width: min(width, MAX_PAGE_WIDTH),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  NavBar(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SelectableText(
-                        focusItem.title,
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
-                    ],
+                  const NavBar(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: SelectableText(
+                      focusItem.title,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
                   ),
                   if (focusItem.author != null)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(12.0),
-                          child: SelectableText.rich(
-                            TextSpan(
-                                children: [
-                                  TextSpan(text: "par "),
-                                  for (var author in focusItem.author!)
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: SelectableText.rich(
+                          TextSpan(
+                              children: [
+                                const TextSpan(text: "par "),
+                                for (var (index, author)
+                                    in focusItem.author!.indexed) ...[
+                                  if (index > 0)
                                     TextSpan(
-                                        text: "${author.normalizedName}",
-                                        recognizer: TapGestureRecognizer()
-                                          ..onTap = () {
-                                            context.go(
-                                                AppRoutes.getAuthorItemRoute(
-                                                    author));
-                                            print(
-                                                "Lien vers la page de l'auteur cliqué !");
-                                            // Vous pouvez ajouter ici la navigation vers la page de l'auteur
-                                            // par exemple, en utilisant Navigator.push()
-                                          },
-                                        style: TextStyle(
-                                            decoration:
-                                                TextDecoration.underline,
-                                            color: Colors.blue))
+                                        text: index ==
+                                                focusItem.author!.length - 1
+                                            ? " et "
+                                            : ", "),
+                                  TextSpan(
+                                      text: author.normalizedName,
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          context.go(
+                                              AppRoutes.getAuthorItemRoute(
+                                                  author));
+                                        },
+                                      style: const TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          color: Colors.blue)),
                                 ],
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineSmall
-                                    ?.copyWith(fontStyle: FontStyle.italic)),
-                          ),
+                              ],
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall
+                                  ?.copyWith(fontStyle: FontStyle.italic)),
+                          textAlign: TextAlign.end,
                         ),
-                      ],
+                      ),
                     ),
-                  for (var part in focusItem.parts)
-                    //if (MediaQuery.of(context).size.width > 800)
-                    buildPart(context, part)
-                  // Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.start,
-                  //     mainAxisSize: MainAxisSize.min,
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       ...buildPart(context, part),
-                  //     ],
-                  //   ),
-                  // )
-                  /*else
-                  SizedBox(
-                    height: 800,
-                    child: Column(
-                      children: [
-                        ...buildPart(context, part),
-                      ],
-                    ),
-                  ),*/
+                  for (var part in focusItem.parts) buildPart(context, part)
                 ],
               ),
             ),
@@ -110,73 +99,58 @@ class FocusItemView extends StatelessWidget {
     );
   }
 
-  // It is inside a row
+  Widget _bodyText(BuildContext context, String text) {
+    return SelectableText.rich(
+      TextSpan(children: [TextSpan(text: text)]),
+      textAlign: bodyTextAlign(context),
+      style: Theme.of(context).textTheme.bodyLarge,
+    );
+  }
+
   Widget buildPart(BuildContext context, FocusItemPart part) {
+    final compact = isCompact(context);
     return switch (part.type) {
-      PartType.subtitle => Row(
-            key: part.key, // Assigner la clé au widget racine de cette partie
-            children: [
-              if (part.subtitle.isNotEmpty)
-                Expanded(
+      PartType.subtitle => KeyedSubtree(
+          key: part.key,
+          child: part.subtitle.isEmpty
+              ? const SizedBox.shrink()
+              : Align(
+                  alignment: Alignment.centerLeft,
                   child: Padding(
                     padding: EdgeInsets.only(
-                        left: 16, top: 64, bottom: 16, right: 16),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SelectableText.rich(
-                          TextSpan(children: [TextSpan(text: part.subtitle)]),
-                          style: Theme.of(context).textTheme.headlineMedium,
-                        )
-                      ],
+                        left: 16,
+                        top: compact ? 32 : 64,
+                        bottom: 16,
+                        right: 16),
+                    child: SelectableText(
+                      part.subtitle,
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
                   ),
-                )
-            ]),
-      PartType.normalParagprah => Row(
-            key: part.key,
-            // Assigner la clé
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: SelectableText.rich(
-                      TextSpan(children: [TextSpan(text: part.text)]),
-                      textAlign: TextAlign.justify,
-                      style: Theme.of(context).textTheme.bodyLarge),
                 ),
-              )
-            ]),
+        ),
+      PartType.normalParagprah => Padding(
+          key: part.key,
+          padding: const EdgeInsets.all(16.0),
+          child: _bodyText(context, part.text),
+        ),
       PartType.paragraphWithLeftImage => KeyedSubtree(
           key: part.key,
-          child: // Envelopper avec KeyedSubtree ou assigner directement si possible
-              LayoutBuilder(builder: (context, constraints) {
+          child: LayoutBuilder(builder: (context, constraints) {
             if (constraints.maxWidth < MAX_WIDTH_FOR_ROW) {
               return Column(children: [
                 Padding(
-                  padding: EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(16),
                   child: MySatImage(
                     assetName: part.imagePath!,
                     legend: part.legend ?? "",
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                   ),
                 ),
                 Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 32.0),
-                    child: SelectableText.rich(
-                      TextSpan(children: [
-                        TextSpan(
-                          text: part.text,
-                        )
-                      ]),
-                      textAlign: TextAlign.justify,
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ))
+                    padding:
+                        EdgeInsets.symmetric(horizontal: compact ? 16.0 : 32.0),
+                    child: _bodyText(context, part.text))
               ]);
             }
             return Row(
@@ -185,7 +159,7 @@ class FocusItemView extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: MySatImage(
                       assetName: part.imagePath!,
                       legend: part.legend ?? "",
@@ -196,15 +170,7 @@ class FocusItemView extends StatelessWidget {
                           padding: mainLeftPadding
                               .copyWith(right: 32)
                               .copyWith(top: 32, bottom: 32),
-                          child: SelectableText.rich(
-                            TextSpan(children: [
-                              TextSpan(
-                                text: part.text,
-                              )
-                            ]),
-                            textAlign: TextAlign.justify,
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          )))
+                          child: _bodyText(context, part.text)))
                 ]);
           }),
         ),
@@ -216,19 +182,11 @@ class FocusItemView extends StatelessWidget {
                 children: [
                   Padding(
                       padding: mainLeftPadding
-                          .copyWith(right: 32)
+                          .copyWith(right: compact ? 16 : 32)
                           .copyWith(top: 32, bottom: 32),
-                      child: SelectableText.rich(
-                        TextSpan(children: [
-                          TextSpan(
-                            text: part.text,
-                          )
-                        ]),
-                        textAlign: TextAlign.justify,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      )),
+                      child: _bodyText(context, part.text)),
                   Padding(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: MySatImage(
                       assetName: part.imagePath!,
                       legend: part.legend ?? "",
@@ -245,17 +203,9 @@ class FocusItemView extends StatelessWidget {
                   Expanded(
                       child: Padding(
                           padding: mainLeftPadding.copyWith(right: 32),
-                          child: SelectableText.rich(
-                            TextSpan(children: [
-                              TextSpan(
-                                text: part.text,
-                              )
-                            ]),
-                            textAlign: TextAlign.justify,
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ))),
+                          child: _bodyText(context, part.text))),
                   Padding(
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: MySatImage(
                       assetName: part.imagePath!,
                       legend: part.legend ?? "",
@@ -264,161 +214,146 @@ class FocusItemView extends StatelessWidget {
                 ]);
           }),
         ),
-      PartType.onlyImage => Row(
-            key: part.key,
-            // Assigner la clé
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(16),
-                  child: MySatImage(
-                    assetName: part.imagePath!,
-                    legend: part.legend ?? "",
+      PartType.onlyImage => Padding(
+          key: part.key,
+          padding: const EdgeInsets.all(16),
+          child: Center(
+            child: MySatImage(
+              assetName: part.imagePath!,
+              legend: part.legend ?? "",
+            ),
+          ),
+        ),
+      PartType.citation => Padding(
+          key: part.key,
+          padding: mainLeftPadding.copyWith(right: 16),
+          child: SelectableText.rich(
+              TextSpan(children: [TextSpan(text: part.text)]),
+              textAlign: bodyTextAlign(context),
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontStyle: FontStyle.italic, fontSize: compact ? 22 : 32)),
+        ),
+      PartType.quote => Padding(
+          key: part.key,
+          padding: const EdgeInsets.all(16),
+          child: Container(
+            padding: const EdgeInsets.only(left: 16),
+            decoration: BoxDecoration(
+                border: Border(
+                    left: BorderSide(
+                        color: Theme.of(context).colorScheme.primary,
+                        width: 3))),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SelectableText(part.text,
+                    textAlign: bodyTextAlign(context),
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(fontStyle: FontStyle.italic)),
+                if (part.legend?.isNotEmpty ?? false)
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: SelectableText(part.legend!,
+                        textAlign: TextAlign.end,
+                        style: Theme.of(context).textTheme.bodySmall),
                   ),
-                ),
-              )
-            ]),
-      PartType.citation => Row(
-            key: part.key,
-            // Assigner la clé
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                  child: Padding(
-                      padding: mainLeftPadding.copyWith(right: 16),
-                      child: SelectableText.rich(
-                          TextSpan(children: [
-                            TextSpan(
-                              text: part.text,
-                            )
-                          ]),
-                          textAlign: TextAlign.justify,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge
-                              ?.copyWith(
-                                  fontStyle: FontStyle.italic, fontSize: 32)))),
-            ]),
-      PartType.gallery => Row(
-            key: part.key,
-            // Assigner la clé
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Container(
-                  height: 600,
-                  padding: mainLeftPadding,
-                  child: SatGallery(
-                    assetNames: part.gallery!,
-                    legend: part.legend,
-                  ),
-                ),
-              ),
-              // Stack(children: [
-              //   Align(
-              //       alignment: Alignment.center,
-              //       child: ),
-              //   if (part.legend != null)
-              //     Align(
-              //       alignment: Alignment.bottomCenter,
-              //       child: Container(
-              //           padding: EdgeInsets.all(8.0),
-              //           decoration: BoxDecoration(
-              //             color: SatStyle.lightBlueColor.withOpacity(0.9),
-              //             borderRadius: BorderRadius.circular(10.0),
-              //           ),
-              //           child: SelectableText(part.legend!,
-              //               style: Theme.of(context)
-              //                   .textTheme
-              //                   .labelMedium
-              //                   ?.copyWith(color: Colors.white))),
-              //     )
-              // ]),
-
-              // Column(children: [
-              //   for(var imagePath in part.gallery!)
-              //     SatImage(assetName: imagePath)
-              // ],)
-            ]),
-      PartType.navigation => Row(
-            key: part.key,
-            // Assigner la clé (si la navigation elle-même doit être scrollable)
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              IconButton(
-                  padding: EdgeInsets.all(24),
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: focusItem.rank > 0
-                      ? () {
-                          print("${focusItem.rank} -> ${focusItem.rank - 1}");
-                          context.go(AppRoutes.getFocusItemRouteByRank(
-                              focusItem.rank - 1));
-                        }
-                      : null),
-              focusItem.rank > 0
-                  ? Expanded(
-                      child: SelectableText(focus[focusItem.rank - 1].title))
-                  : Spacer(),
-              Spacer(),
-              focusItem.rank < focus.length - 1
-                  ? Expanded(
-                      child: SelectableText(focus[focusItem.rank + 1].title))
-                  : Spacer(),
-              IconButton(
-                padding: EdgeInsets.all(24),
-                icon: Icon(Icons.arrow_forward),
-                onPressed: focusItem.rank < focus.length - 1
-                    ? () {
-                        print("${focusItem.rank} -> ${focusItem.rank + 1}");
-                        context.go(AppRoutes.getFocusItemRouteByRank(
-                            focusItem.rank + 1));
-                      }
-                    : null,
-              )
-            ]),
-      PartType.summary => Row(
-            key: part.key,
-            // Assigner la clé (si le sommaire lui-même doit être scrollable)
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center, // Centrer horizontalement
-            children: [
-              // Ajouter un SizedBox pour le décalage à gauche
-              SizedBox(width: MediaQuery.of(context).size.width * 0.10),
-              Padding(
-                padding: EdgeInsets.only(left: 16.0), // Garder le padding original si nécessaire
-                child: SelectableText.rich(
-                  TextSpan(children: [
-                    for (var item in focusItem.parts
-                        .where((item) => item.subtitle.isNotEmpty))
-                      TextSpan(
-                          text: "${item.subtitle}\n",
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              goToPart(context, item);
-                            },
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              ],
+            ),
+          ),
+        ),
+      PartType.gallery => LayoutBuilder(
+          key: part.key,
+          builder: (context, constraints) => Container(
+            height: min(MAX_GALLERY_HEIGHT, constraints.maxWidth * 0.75),
+            padding: compact ? EdgeInsets.zero : mainLeftPadding,
+            child: SatGallery(
+              assetNames: part.gallery!,
+              legend: part.legend,
+            ),
+          ),
+        ),
+      PartType.navigation =>
+        KeyedSubtree(key: part.key, child: _buildNavigation(context, compact)),
+      PartType.summary => Align(
+          key: part.key,
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: EdgeInsets.only(
+                left: 16.0 +
+                    (compact ? 0 : MediaQuery.sizeOf(context).width * 0.10),
+                right: 16.0),
+            child: SelectableText.rich(
+              TextSpan(children: [
+                for (var item in focusItem.parts
+                    .where((item) => item.subtitle.isNotEmpty))
+                  TextSpan(
+                      text: "${item.subtitle}\n",
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          goToPart(context, item);
+                        },
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             decoration: TextDecoration.underline,
                             color: Colors.blue,
                           ))
-                  ]),
-                ),
-              ),
-              Spacer(), // Le Spacer remplira l'espace restant à droite
-            ]),
+              ]),
+            ),
+          ),
+        ),
       PartType.space => SizedBox(
-          key: part.key, // Assigner la clé (si l'espace doit être scrollable)
+          key: part.key,
           height: 16,
         )
     };
+  }
+
+  /// Previous / next article links; stacked on narrow screens so that the
+  /// titles are not squeezed into two thin columns.
+  Widget _buildNavigation(BuildContext context, bool compact) {
+    final hasPrevious = focusItem.rank > 0;
+    final hasNext = focusItem.rank < focus.length - 1;
+    void goTo(int rank) => context.go(AppRoutes.getFocusItemRouteByRank(rank));
+
+    final previous = hasPrevious
+        ? InkWell(
+            onTap: () => goTo(focusItem.rank - 1),
+            child: Row(children: [
+              const Padding(
+                padding: EdgeInsets.all(16),
+                child: Icon(Icons.arrow_back),
+              ),
+              Flexible(child: Text(focus[focusItem.rank - 1].title)),
+            ]),
+          )
+        : const SizedBox.shrink();
+    final next = hasNext
+        ? InkWell(
+            onTap: () => goTo(focusItem.rank + 1),
+            child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+              Flexible(
+                  child: Text(focus[focusItem.rank + 1].title,
+                      textAlign: TextAlign.end)),
+              const Padding(
+                padding: EdgeInsets.all(16),
+                child: Icon(Icons.arrow_forward),
+              ),
+            ]),
+          )
+        : const SizedBox.shrink();
+
+    if (compact) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [previous, next],
+      );
+    }
+    return Row(children: [
+      Expanded(child: previous),
+      const SizedBox(width: 32),
+      Expanded(child: next),
+    ]);
   }
 
   String getAuthorsHeadline() {
@@ -430,13 +365,9 @@ class FocusItemView extends StatelessWidget {
     if (targetContext != null) {
       Scrollable.ensureVisible(
         targetContext,
-        // controller: _scrollController, // Use the controller owned by this widget
         duration: const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
-        // alignment: alignment,
       );
-    } else {
-      print("Target context for scrolling not found in ParentScaffold.");
     }
   }
 }
