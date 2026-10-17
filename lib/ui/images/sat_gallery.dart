@@ -1,5 +1,3 @@
-
-
 import "package:cradock_map/ui/images/sat_image.dart";
 import "package:flutter/material.dart";
 
@@ -54,17 +52,15 @@ class _SatGalleryState extends State<SatGallery> {
             mainAxisAlignment: MainAxisAlignment.center,
             // alignment: Alignment.center,
             children: <Widget>[
-              const Spacer(), // Ajout d'un Spacer à gauche
-
               if (_currentIndex > 0)
-                Container(
+                SizedBox(
                   width: 40,
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back),
                     color: Theme.of(context)
                         .colorScheme
                         .onSurface
-                        .withOpacity(0.7),
+                        .withValues(alpha: 0.7),
                     onPressed: () {
                       _pageController.previousPage(
                         duration: const Duration(milliseconds: 300),
@@ -74,7 +70,7 @@ class _SatGalleryState extends State<SatGallery> {
                   ),
                 )
               else
-                const SizedBox.shrink(),
+                const SizedBox(width: 40), // Garde l'image centrée
               Expanded(
                 child: PageView.builder(
                   controller: _pageController,
@@ -84,28 +80,27 @@ class _SatGalleryState extends State<SatGallery> {
                       _currentIndex = index;
                     });
                   },
-
                   itemBuilder: (context, index) {
                     return SatImage(
-                      assetName: widget.assetNames[index],
-                      legend: widget.legend
+                        assetName: widget.assetNames[index],
+                        legend: widget.legend
 
-                      // Utiliser les contraintes du LayoutBuilder si nécessaire pour SatImage
-                      // maxHeight: constraints.maxHeight,
-                      // maxWidth: constraints.maxWidth,
-                    );
+                        // Utiliser les contraintes du LayoutBuilder si nécessaire pour SatImage
+                        // maxHeight: constraints.maxHeight,
+                        // maxWidth: constraints.maxWidth,
+                        );
                   },
                 ),
               ),
               if (_currentIndex < widget.assetNames.length - 1)
-                Container(
+                SizedBox(
                   width: 40,
                   child: IconButton(
                     icon: const Icon(Icons.arrow_forward),
                     color: Theme.of(context)
                         .colorScheme
                         .onSurface
-                        .withOpacity(0.7),
+                        .withValues(alpha: 0.7),
                     onPressed: () {
                       _pageController.nextPage(
                         duration: const Duration(milliseconds: 300),
@@ -113,10 +108,10 @@ class _SatGalleryState extends State<SatGallery> {
                       );
                     },
                   ),
-                ) else
-                  const SizedBox(width: 40), // Placeholder pour maintenir l'alignement
-
-              const Spacer(), // Ajout d'un Spacer à droite
+                )
+              else
+                const SizedBox(
+                    width: 40), // Placeholder pour maintenir l'alignement
             ],
           ),
         );
