@@ -12,17 +12,29 @@ class WelcomeView extends StatelessWidget {
         child: Column(
           children: [
             NavBar(),
-            Image.asset(
-              "assets/icons/SAT-couleur-1000.png",
-              height: 300,
+            const SizedBox(
+              height: 40,
             ),
-            SizedBox(
-              height: 80,
+            Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "assets/icons/SAT-couleur-1000.png",
+                    height: 300,
+                  ),
+                  const SizedBox(
+                    height: 80,
+                  ),
+                  SelectableText(
+                    "Bienvenue sur le site de Mme Cradock en Touraine",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
+                ],
+              ),
             ),
-            SelectableText(
-              "Bienvenue sur le site de Mme Cradock en Touraine",
-              style: Theme.of(context).textTheme.headlineLarge,
-            )
           ],
         ),
       ),

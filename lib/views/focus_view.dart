@@ -10,27 +10,33 @@ class FocusView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageLayout(child: LayoutBuilder(
-        builder: (context, constraints) {
-          var size = MediaQuery.of(context).size;
+      body: PageLayout(child: Builder(
+        builder: (context) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               NavBar(),
-              Padding(
-                padding: EdgeInsets.only(left: 16.0),
-                child: SelectableText(
-                  "Points abordés lors du Goûter de nos trésors",
-                  style: Theme.of(context).textTheme.headlineLarge,
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: SelectableText(
+                    "Points abordés lors du Goûter de nos trésors",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
                 ),
               ),
               SizedBox(
                 height: 12,
               ),
+              // Centered column of bounded width rather than a 20% margin on
+              // each side, which left almost no room on phones.
               for (var focus in focusData)
-                Padding(
-                    padding: EdgeInsets.symmetric(horizontal: size.width * 0.2),
-                    child: FocusItemTile(item: focus))
+                Center(
+                  child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 800),
+                      child: FocusItemTile(item: focus)),
+                )
             ],
           );
         },

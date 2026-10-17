@@ -1,10 +1,9 @@
-
-
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 
 /// Wrapper to build great web pages.
 class PageLayout extends StatefulWidget {
-  PageLayout({super.key, required this.child, this.scrollController});
+  const PageLayout({super.key, required this.child, this.scrollController});
 
   final Widget child;
 
@@ -16,9 +15,19 @@ class PageLayout extends StatefulWidget {
 }
 
 class _PageLayoutState extends State<PageLayout> {
+  late ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = widget.scrollController ?? ScrollController();
+  }
+
   @override
   void dispose() {
-    widget.scrollController?.dispose();
+    // Dispose the controller only if it was created internally.
+    // If it was passed in, the owner is responsible for disposing it.
+    if (widget.scrollController == null) _scrollController.dispose();
     super.dispose();
   }
   @override
@@ -30,7 +39,6 @@ class _PageLayoutState extends State<PageLayout> {
     return LayoutBuilder(
       builder: (context, constraints) {
         // Determine if the horizontal scrollbar should be visible.
-        print("max width: ${constraints.maxWidth}");
 
         Widget content = ConstrainedBox(
           constraints: BoxConstraints(
@@ -42,15 +50,25 @@ class _PageLayoutState extends State<PageLayout> {
           child: widget.child,
         );
 
-        // Always have vertical scroll.
-        return Scrollbar(
-          trackVisibility: true,
-          thumbVisibility: true,
-          controller: widget.scrollController,
-          child: SingleChildScrollView(
-            controller: widget.scrollController,
-            scrollDirection: Axis.vertical,
-            child: content,
+        // Always have vertical scroll. The scrollbar stays visible with a
+        // mouse; on touch devices it only shows while scrolling.
+        final isDesktop = switch (defaultTargetPlatform) {
+          TargetPlatform.linux ||
+          TargetPlatform.macOS ||
+          TargetPlatform.windows =>
+            true,
+          _ => false,
+        };
+        return SafeArea(
+          child: Scrollbar(
+            trackVisibility: isDesktop,
+            thumbVisibility: isDesktop,
+            controller: _scrollController,
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              scrollDirection: Axis.vertical,
+              child: content,
+            ),
           ),
         );
       },

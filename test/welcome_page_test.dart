@@ -1,30 +1,35 @@
-//
-// import "package:flutter/material.dart";
-// import "package:flutter_test/flutter_test.dart";
-// import "package:cradock_map/main.dart" as app;
-//
-// /// Test the welcome page of the app.
-// void main() {
-//   testWidgets("The page has a big SAT picture", (tester) async {
-//     await tester.pumpWidget(app.MyApp());
-//     find.widgetWithImage(widgetType, image)
-//   });
-//   group("WelcomePage Tests", () {
-//     testWidgets("Welcome page displays correctly", (WidgetTester tester) async {
-//       app.main();
-//       await tester.pumpAndSettle();
-//
-//       // Verify that the "Welcome to Flutter Playground" text is present.
-//       expect(find.text("Welcome to Flutter Playground"), findsOneWidget);
-//
-//       // Verify that the "Get Started" button is present.
-//       expect(find.widgetWithText(ElevatedButton, "Get Started"), findsOneWidget);
-//     });
-//
-//     testWidgets("Get Started button navigates to home page", (WidgetTester tester) async {
-//       app.main();
-//       await tester.pumpAndSettle();
-//       // Add navigation test logic here when the HomePage is implemented.
-//     });
-//   });
-// }
+import "package:flutter/material.dart";
+import "package:flutter_test/flutter_test.dart";
+import "package:cradock_map/views/welcome_view.dart";
+import "package:cradock_map/notifiers/multi_notifier.dart";
+
+import "package:cradock_map/routes/routes.dart";
+import "package:go_router/go_router.dart";
+
+void main() {
+  testWidgets("WelcomeView displays welcome text", (WidgetTester tester) async {
+    final router = GoRouter(
+      initialLocation: AppRoutes.WELCOME_ROUTE,
+      routes: [
+        GoRoute(
+          path: AppRoutes.WELCOME_ROUTE,
+          builder: (context, state) => WelcomeView(),
+        ),
+      ],
+    );
+
+    await tester.pumpWidget(
+      MultiNotifier(
+        child: MaterialApp.router(
+          routerConfig: router,
+        ),
+      ),
+    );
+
+    // Verify that our welcome text is present.
+    expect(find.text("Bienvenue sur le site de Mme Cradock en Touraine"), findsOneWidget);
+
+    // Verify that the SAT image is present.
+    expect(find.byType(Image), findsOneWidget);
+  });
+}

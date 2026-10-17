@@ -1,10 +1,15 @@
 import "package:cradock_map/notifiers/multi_notifier.dart";
 import "package:cradock_map/routes/routes.dart";
 import "package:cradock_map/style/themes.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
+import "package:flutter_web_plugins/url_strategy.dart";
 
 
 void main() {
+  if (kIsWeb) {
+    usePathUrlStrategy();
+  }
   runApp(const MyApp());
 }
 

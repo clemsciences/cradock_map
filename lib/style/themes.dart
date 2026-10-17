@@ -1,12 +1,18 @@
 
 
 
+import "package:cradock_map/style/no_page_transitions_builder.dart";
 import "package:cradock_map/style/style.dart";
 import "package:flutter/material.dart";
 
 class AppTheme {
   static final lightTheme = ThemeData(
     useMaterial3: true,
+    // Same instant page change on every platform.
+    pageTransitionsTheme: PageTransitionsTheme(builders: {
+      for (var platform in TargetPlatform.values)
+        platform: const NoPageTransitionsBuilder(),
+    }),
     // Define the default brightness and colors.
     colorScheme: ColorScheme.fromSeed(
       seedColor: SatStyle.lightBlueColor,

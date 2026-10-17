@@ -8,11 +8,11 @@ import "package:cradock_map/views/author_item_view.dart";
 import "package:cradock_map/views/authors_view.dart";
 import "package:cradock_map/views/focus_item_view.dart";
 import "package:cradock_map/views/focus_view.dart";
+import "package:cradock_map/views/settings_view.dart";
 import "package:cradock_map/views/references_view.dart";
 import "package:cradock_map/views/sequence_item_view.dart";
 import "package:cradock_map/views/sequence_view.dart";
 import "package:cradock_map/views/welcome_view.dart";
-import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 
 class AppRoutes {
@@ -25,6 +25,7 @@ class AppRoutes {
   static const String FOCUS_ITEM_ROUTE = "$FOCUS_ROUTE/:id";
   static const String AUTHORS_ROUTE = "/auteurs";
   static const String AUTHOR_ITEM_ROUTE = "$AUTHORS_ROUTE/:id";
+  static const String GENERAL_ROUTE = "/general";
 
   static String replaceItem(String route, String id) {
     return route.replaceAll(":id", id);
@@ -46,29 +47,6 @@ class AppRoutes {
   }
 }
 
-class SatAnimation1 extends CustomTransitionPage {
-  SatAnimation1({
-    required super.child,
-    super.key,
-    super.name,
-    super.arguments,
-    super.restorationId,
-    super.transitionDuration = const Duration(milliseconds: 500),
-    super.reverseTransitionDuration = const Duration(milliseconds: 500),
-    super.maintainState = true,
-    super.fullscreenDialog = false,
-    super.opaque = true,
-    super.barrierDismissible = false,
-    super.barrierColor,
-    super.barrierLabel,
-  }) : super(transitionsBuilder:
-            (context, animation, secondaryAnimation, child) {
-          return FadeTransition(
-            opacity: animation,
-            child: child,
-          );
-        });
-}
 
 final GoRouter router = GoRouter(
   debugLogDiagnostics: true,
@@ -77,9 +55,7 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
         path: AppRoutes.WELCOME_ROUTE,
-        pageBuilder: (context, state) {
-          return SatAnimation1(key: state.pageKey, child: WelcomeView());
-        }),
+        builder: (context, state) => WelcomeView()),
     /*GoRoute(
           path: AppRoutes.BALADE_ROUTE,
           builder: (context, state) => BaladeView()),*/
@@ -106,6 +82,9 @@ final GoRouter router = GoRouter(
         builder: (context, state) => AuthorsView(
               authors: authors,
             )),
+    GoRoute(
+        path: AppRoutes.GENERAL_ROUTE,
+        builder: (context, state) => const GeneralView()),
     for (var author in authors)
       GoRoute(
           path: AppRoutes.getAuthorItemRoute(author),

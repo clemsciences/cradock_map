@@ -25,32 +25,20 @@ class SatTile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  MouseRegion(
-                    cursor: SystemMouseCursors.text,
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {},
-                      child: SelectableText(
-                        title,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                    ),
+                  // Plain Text: a SelectableText would swallow the tap and the
+                  // tile would only open when tapping its margins.
+                  Text(
+                    title,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
-                  MouseRegion(
-                    cursor: SystemMouseCursors.text,
-                    child: GestureDetector(
-                      // Empêche la sélection de texte d'annuler le clic global
-                      behavior: HitTestBehavior.translucent,
-                      onTap: () {}, // Empêche la propagation, mais ne fait rien
-                      child: SelectableText(
-                        subtitle,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
+                  if (subtitle.isNotEmpty)
+                    Text(
+                      subtitle,
+                      style: Theme.of(context).textTheme.bodyLarge,
                     ),
-                  ),
                 ],
               ),
             ),
