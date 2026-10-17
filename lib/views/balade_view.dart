@@ -8,6 +8,6 @@ class BaladeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MapView(title: "Cradock - balade",);
+    return const MapView();
   }
 }

@@ -7,8 +7,6 @@ class SequenceView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MapView(
-      title: "Cradock - séquence",
-    );
+    return const MapView();
   }
 }

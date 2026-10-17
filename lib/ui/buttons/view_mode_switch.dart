@@ -9,29 +9,29 @@ class ViewModeRadioButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppStateNotifier>(builder: (context, multiNotifier, _) {
-      return Row(
-        children: [
-          Flexible(
-            flex: 1,
-            child: RadioListTile<ViewMode>(
-                title: const Text("Mode balade"),
-                value: ViewMode.balade,
-                groupValue: multiNotifier.viewMode,
-                onChanged: (newValue) {
-                  multiNotifier.updateViewMode(newValue!);
-                }),
-          ),
-          Flexible(
-            flex: 1,
-            child: RadioListTile<ViewMode>(
-                title: const Text("Mode séquence"),
-                value: ViewMode.sequence,
-                groupValue: multiNotifier.viewMode,
-                onChanged: (newValue) {
-                  multiNotifier.updateViewMode(newValue!);
-                }),
-          ),
-        ],
+      if (!multiNotifier.isExpertMode) {
+        return const SizedBox.shrink();
+      }
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SegmentedButton<ViewMode>(
+          segments: const <ButtonSegment<ViewMode>>[
+            ButtonSegment<ViewMode>(
+              value: ViewMode.balade,
+              label: Text("Balade"),
+              icon: Icon(Icons.map),
+            ),
+            ButtonSegment<ViewMode>(
+              value: ViewMode.sequence,
+              label: Text("Séquence"),
+              icon: Icon(Icons.route),
+            ),
+          ],
+          selected: <ViewMode>{multiNotifier.viewMode},
+          onSelectionChanged: (Set<ViewMode> newSelection) {
+            multiNotifier.updateViewMode(newSelection.first);
+          },
+        ),
       );
     });
   }

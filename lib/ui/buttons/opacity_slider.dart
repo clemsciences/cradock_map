@@ -8,14 +8,17 @@ class OpacitySlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppStateNotifier>(
-      builder: (context, notifier, child) => Slider(
-        min: 0,
-        max: 1,
-        divisions: 10,
-        value: notifier.opacity,
-        onChanged: (double value) {
-          notifier.updateOpacity(value);
-        },
+      builder: (context, notifier, child) => SizedBox(
+        width: 150,
+        child: Slider(
+          min: 0,
+          max: 1,
+          divisions: 10,
+          value: notifier.opacity,
+          onChanged: (double value) {
+            notifier.updateOpacity(value);
+          },
+        ),
       ),
     );
   }

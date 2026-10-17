@@ -8,11 +8,17 @@ class ShowOverlayButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AppStateNotifier>(builder: (context, state, child) {
-      return Switch(
-          value: state.isShowing,
-          onChanged: (isChecked) {
-            state.switchState();
-          });
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text("Superposer"),
+          Switch(
+              value: state.isShowing,
+              onChanged: (isChecked) {
+                state.switchState();
+              }),
+        ],
+      );
     });
   }
 }
