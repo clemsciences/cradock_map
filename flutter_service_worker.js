@@ -288,7 +288,7 @@ const RESOURCES = {"assets/assets/images/cassini-tours-langeais.jpg": "454548970
 "splash/img/dark-2x.png": "4873afcfc84e5020ef0b75a6fa26e596",
 "index.html": "8390037f3be34621c7e97d83cc1fce3b",
 "/": "8390037f3be34621c7e97d83cc1fce3b",
-"version.json": "40e96ca93c82dbc480d7e2269aea0771",
+"version.json": "bf45f0194110849fc1961003d09010dd",
 "flutter_bootstrap.js": "78da431ccdb2b05f60ce436084c71d3f"};
 // The application shell files that are downloaded before a service worker can
 // start.
