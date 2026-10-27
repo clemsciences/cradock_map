@@ -11,21 +11,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.32.0'
+          flutter-version: '3.35.5'
 
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Test
+        run: flutter test
+
       - name: Build Flutter Web
         run: flutter build web --base-href "/cradock_map/"
 
+      # One HTML page per article (search engines, link previews, screen
+      # readers), 404.html for the other routes, sitemap.xml and robots.txt.
+      - name: Generate the static pages
+        run: flutter test tool/generate_static_pages.dart
+
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        if: github.event_name == 'push'
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build/web

@@ -14,6 +14,9 @@
   // The app covers the logo with its first frame: the indicator goes away then.
   window.addEventListener("flutter-first-frame", function () {
     loader?.remove();
+    // The app has its own accessibility tree: the text of the page must not
+    // be read twice (it stays in the page for search engines).
+    document.getElementById("page-content")?.setAttribute("aria-hidden", "true");
   }, { once: true });
 
   // A script that fails to download (main.dart.js, CanvasKit) does not reject
@@ -24,6 +27,9 @@
 
   setStatus("Téléchargement de l'application…");
   _flutter.loader.load({
+    // The rendering engine is served with the site rather than by Google's CDN
+    // (fewer third parties, see the legal notice).
+    config: { canvasKitBaseUrl: "canvaskit/" },
     onEntrypointLoaded: async function (engineInitializer) {
       try {
         setStatus("Préparation de l'affichage…");

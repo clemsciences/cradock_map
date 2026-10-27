@@ -14,9 +14,10 @@ Flutter app (web-first, also Android/iOS/desktop) for the Société Archéologiq
 - All tests: `flutter test`
 - Single test: `flutter test test/sequence_animation_test.dart` (add `--plain-name "<test name>"` to target one case)
 - Production web build (as in CI): `flutter build web --base-href "/cradock_map/"`
+- Static HTML pages (after the build, as in CI): `flutter test tool/generate_static_pages.dart` — writes one `<route>.html` per article/author/main page (title, description, Open Graph, JSON-LD, full text for search engines and screen readers), `404.html`, `sitemap.xml`, `robots.txt` into `build/web` (see `tool/static_pages.dart`; it runs through `flutter test` because the data imports Flutter). New routes with content must be added there too.
 - Regenerate splash screens after changing `flutter_native_splash` config in `pubspec.yaml`: `dart run flutter_native_splash:create` — then check that `web/index.html` still has the `#app-loader` block (spinner + startup status under the logo, driven by the custom `web/flutter_bootstrap.js`, removed on the `flutter-first-frame` event).
 
-CI (`.github/workflows`) builds web with Flutter 3.32.0 on every push to `main` and deploys `build/web` to GitHub Pages under `/cradock_map/` — the base href must stay in sync with that path.
+CI (`.github/workflows`) runs the tests, builds web with Flutter 3.35.5 and generates the static pages on every push to `main` and deploys `build/web` to GitHub Pages under `/cradock_map/` — the base href must stay in sync with that path.
 
 ## Architecture
 

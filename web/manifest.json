@@ -1,12 +1,11 @@
 {
-    "name": "cradock_map",
-    "short_name": "cradock_map",
+    "name": "Le voyage de Mme Cradock en Touraine",
+    "short_name": "Mme Cradock",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "Parcours des Cradock en Touraine",
-    "orientation": "portrait-primary",
+    "background_color": "#FFFFFF",
+    "theme_color": "#3A5E6D",
+    "description": "Carte interactive et articles sur le voyage de Mme Cradock en Touraine en 1785.",
     "prefer_related_applications": false,
     "icons": [
         {
@@ -36,5 +35,6 @@
             "sizes": "637x1000",
             "type": "image/png"
         }
-    ]
+    ],
+    "lang": "fr"
 }

@@ -1,17 +1,27 @@
-<!DOCTYPE html><html><head>
+<!DOCTYPE html><html lang="fr"><head>
   <base href="$FLUTTER_BASE_HREF">
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="Parcours des Cradock en Touraine">
+  <!-- page-meta: replaced on each page by tool/static_pages.dart -->
+  <title>Le voyage de Mme Cradock en Touraine (1785)</title>
+  <meta name="description" content="Carte interactive et articles de la Société archéologique de Touraine sur le voyage d'Anna Francisca Cradock de Langeais à Amboise en septembre 1785, d'après son journal.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Le voyage de Mme Cradock en Touraine">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:title" content="Le voyage de Mme Cradock en Touraine (1785)">
+  <meta property="og:description" content="Carte interactive et articles de la Société archéologique de Touraine sur le voyage d'Anna Francisca Cradock de Langeais à Amboise en septembre 1785, d'après son journal.">
+  <meta property="og:image" content="https://clemsciences.github.io/cradock_map/icons/SAT-couleur-1000.png">
+  <meta name="twitter:card" content="summary">
+  <!-- /page-meta -->
+  <meta name="theme-color" content="#3A5E6D">
 
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="cradock_map">
+  <meta name="apple-mobile-web-app-title" content="Mme Cradock">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="manifest" href="manifest.json">
 
-  <title>cradock_map</title>
   <style id="splash-screen-style">
     html {
       height: 100%
@@ -86,6 +96,32 @@
 
   <!-- Loading indicator under the SAT logo, driven by flutter_bootstrap.js
        (kept outside the flutter_native_splash block, which that tool rewrites). -->
+  <style id="page-content-style">
+    /* Text of the page (tool/static_pages.dart): read by search engines and
+       screen readers, hidden behind the app on screen. */
+    #page-content {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  </style>
+  <noscript>
+    <style>
+      #splash, #app-loader { display: none !important; }
+      #page-content {
+        position: static; width: auto; height: auto; overflow: visible;
+        clip-path: none; white-space: normal;
+        max-width: 50rem; margin: 0 auto; padding: 1rem;
+        font-family: Georgia, serif; line-height: 1.5; color: #1a1a1a;
+      }
+      #page-content img { max-width: 100%; height: auto; }
+      #page-content nav ul { padding: 0; }
+      #page-content nav li { display: inline; margin-right: 1rem; }
+    </style>
+  </noscript>
   <style id="app-loader-style">
     #app-loader {
       position: absolute;
@@ -140,6 +176,9 @@
     <div id="app-loader-spinner"></div>
     <div id="app-loader-text">Chargement du site…</div>
   </div>
+  <!-- page-content: the text of the page, for search engines, link previews
+       and screen readers until the app starts (tool/static_pages.dart) -->
+  <!-- /page-content -->
   <script src="flutter_bootstrap.js" defer=""></script>
 
 
