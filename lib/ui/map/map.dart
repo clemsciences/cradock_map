@@ -13,7 +13,6 @@ import "package:cradock_map/ui/map/markers/marker.dart";
 import "package:flutter/material.dart";
 import "package:flutter_map/flutter_map.dart";
 import "package:flutter_map_animations/flutter_map_animations.dart";
-import "package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart";
 import "package:latlong2/latlong.dart";
 import "package:provider/provider.dart";
 
@@ -118,7 +117,9 @@ class _TouraineMapState extends State<TouraineMap>
               TileLayer(
                 urlTemplate: TileProviderData.carteEtatMajor19Century,
                 userAgentPackageName: AppData.appData,
-                tileProvider: CancellableNetworkTileProvider(),
+                // Since flutter_map 8.2, obsolete tile requests are cancelled by the
+                // default provider (the cancellable one is discontinued).
+                tileProvider: NetworkTileProvider(),
               ),
               if (appStateNotifier.isShowing)
                 OverlayImageLayer(overlayImages: [
