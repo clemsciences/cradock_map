@@ -8,6 +8,7 @@ import "package:cradock_map/views/author_item_view.dart";
 import "package:cradock_map/views/authors_view.dart";
 import "package:cradock_map/views/focus_item_view.dart";
 import "package:cradock_map/views/focus_view.dart";
+import "package:cradock_map/views/legal_view.dart";
 import "package:cradock_map/views/settings_view.dart";
 import "package:cradock_map/views/references_view.dart";
 import "package:cradock_map/views/sequence_item_view.dart";
@@ -26,6 +27,7 @@ class AppRoutes {
   static const String AUTHORS_ROUTE = "/auteurs";
   static const String AUTHOR_ITEM_ROUTE = "$AUTHORS_ROUTE/:id";
   static const String GENERAL_ROUTE = "/general";
+  static const String LEGAL_ROUTE = "/mentions-legales";
 
   static String replaceItem(String route, String id) {
     return route.replaceAll(":id", id);
@@ -39,14 +41,14 @@ class AppRoutes {
   static String getFocusItemRoute(FocusItem item) {
     return replaceItem(FOCUS_ITEM_ROUTE, item.routeId);
   }
+
   static String getFocusItemRouteByRank(int rank) {
-    if(rank < 0 || rank >= focusData.length) {
+    if (rank < 0 || rank >= focusData.length) {
       throw Exception("Rank out of bounds");
     }
     return replaceItem(FOCUS_ITEM_ROUTE, focusData[rank].routeId);
   }
 }
-
 
 final GoRouter router = GoRouter(
   debugLogDiagnostics: true,
@@ -75,7 +77,7 @@ final GoRouter router = GoRouter(
           path: "${AppRoutes.FOCUS_ROUTE}/${focusItem.routeId}",
           builder: (context, state) => FocusItemView(
                 focusItem: focusItem,
-            focus: focusData,
+                focus: focusData,
               )),
     GoRoute(
         path: AppRoutes.AUTHORS_ROUTE,
@@ -85,6 +87,9 @@ final GoRouter router = GoRouter(
     GoRoute(
         path: AppRoutes.GENERAL_ROUTE,
         builder: (context, state) => const GeneralView()),
+    GoRoute(
+        path: AppRoutes.LEGAL_ROUTE,
+        builder: (context, state) => const LegalView()),
     for (var author in authors)
       GoRoute(
           path: AppRoutes.getAuthorItemRoute(author),

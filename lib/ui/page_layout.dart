@@ -1,3 +1,6 @@
+import "dart:math";
+
+import "package:cradock_map/ui/page_footer.dart";
 import "package:flutter/foundation.dart";
 import "package:flutter/material.dart";
 
@@ -6,7 +9,6 @@ class PageLayout extends StatefulWidget {
   const PageLayout({super.key, required this.child, this.scrollController});
 
   final Widget child;
-
 
   final ScrollController? scrollController;
 
@@ -30,6 +32,7 @@ class _PageLayoutState extends State<PageLayout> {
     if (widget.scrollController == null) _scrollController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     // This is the breakpoint where the horizontal scrollbar becomes visible.
@@ -42,7 +45,7 @@ class _PageLayoutState extends State<PageLayout> {
 
         Widget content = ConstrainedBox(
           constraints: BoxConstraints(
-            minHeight: constraints.maxHeight,
+            minHeight: max(0, constraints.maxHeight - PageFooter.height),
             // Ensure the content can be wider than the viewport if needed for horizontal scrolling.
             // minWidth: showHorizontalScroll ? horizontalScrollBreakpoint : constraints.maxWidth,
             // minWidth: max(constraints.maxWidth, horizontalScrollBreakpoint),
@@ -67,7 +70,7 @@ class _PageLayoutState extends State<PageLayout> {
             child: SingleChildScrollView(
               controller: _scrollController,
               scrollDirection: Axis.vertical,
-              child: content,
+              child: Column(children: [content, const PageFooter()]),
             ),
           ),
         );
