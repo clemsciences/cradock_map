@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://clemsciences.github.io/cradock_map/sitemap.xml
