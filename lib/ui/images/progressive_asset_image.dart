@@ -11,12 +11,16 @@ class ProgressiveAssetImage extends StatelessWidget {
     this.fit = BoxFit.contain,
     this.width,
     this.height,
+    this.semanticLabel,
   });
 
   final String assetName;
   final BoxFit fit;
   final double? width;
   final double? height;
+
+  /// Text alternative read by screen readers (the legend of the image).
+  final String? semanticLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +31,8 @@ class ProgressiveAssetImage extends StatelessWidget {
       fit: fit,
       width: width,
       height: height,
+      semanticLabel: semanticLabel,
+      excludeFromSemantics: semanticLabel == null,
       frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
         if (frame != null || wasSynchronouslyLoaded) return child;
         // Not decoded yet: the placeholder takes the image's place (the image

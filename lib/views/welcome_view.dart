@@ -23,6 +23,8 @@ class WelcomeView extends StatelessWidget {
                   Image.asset(
                     "assets/icons/SAT-couleur-1000.png",
                     height: 300,
+                    semanticLabel:
+                        "Logo de la Société archéologique de Touraine",
                   ),
                   const SizedBox(
                     height: 80,

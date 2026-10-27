@@ -29,11 +29,15 @@ class SatImage extends StatelessWidget {
     return Container(
       padding: padding,
       child: assetName.isNotEmpty
-          ? MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: GestureDetector(
+          ? Semantics(
+              button: true,
+              hint: "Afficher en plein écran",
+              child: InkWell(
                 onTap: () => ImageViewerPage.open(context, assetName),
-                child: ProgressiveAssetImage(assetName: assetName),
+                child: ProgressiveAssetImage(
+                    assetName: assetName,
+                    semanticLabel:
+                        legend?.isNotEmpty ?? false ? legend : "Illustration"),
               ),
             )
           : const Text("Impossible de charger l'image"),

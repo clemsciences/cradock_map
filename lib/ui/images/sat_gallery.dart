@@ -57,6 +57,7 @@ class _SatGalleryState extends State<SatGallery> {
                   width: 40,
                   child: IconButton(
                     icon: const Icon(Icons.arrow_back),
+                    tooltip: "Image précédente",
                     color: Theme.of(context)
                         .colorScheme
                         .onSurface
@@ -81,14 +82,13 @@ class _SatGalleryState extends State<SatGallery> {
                     });
                   },
                   itemBuilder: (context, index) {
+                    final count = widget.assetNames.length;
                     return SatImage(
                         assetName: widget.assetNames[index],
-                        legend: widget.legend
-
-                        // Utiliser les contraintes du LayoutBuilder si nécessaire pour SatImage
-                        // maxHeight: constraints.maxHeight,
-                        // maxWidth: constraints.maxWidth,
-                        );
+                        legend: [
+                          if (widget.legend?.isNotEmpty ?? false) widget.legend,
+                          if (count > 1) "image ${index + 1} sur $count",
+                        ].join(", "));
                   },
                 ),
               ),
@@ -97,6 +97,7 @@ class _SatGalleryState extends State<SatGallery> {
                   width: 40,
                   child: IconButton(
                     icon: const Icon(Icons.arrow_forward),
+                    tooltip: "Image suivante",
                     color: Theme.of(context)
                         .colorScheme
                         .onSurface

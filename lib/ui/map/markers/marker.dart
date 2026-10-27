@@ -58,6 +58,7 @@ class SatMarker extends Marker {
                                   ImagePreviews.pathOf(
                                       "assets/images/carrosse.png"),
                                   height: height,
+                                  semanticLabel: "Carrosse de Mme Cradock",
                                 ),
                               ],
                             )

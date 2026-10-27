@@ -116,12 +116,19 @@ class _MySatImageState extends State<MySatImage> {
                           children: [
                             Align(
                               alignment: Alignment.center,
-                              child: InkWell(
-                                onTap: _open,
-                                child: ProgressiveAssetImage(
-                                  assetName: widget.assetName,
-                                  width: width,
-                                  height: height,
+                              child: Semantics(
+                                button: true,
+                                hint: "Afficher en plein écran",
+                                child: InkWell(
+                                  onTap: _open,
+                                  child: ProgressiveAssetImage(
+                                    assetName: widget.assetName,
+                                    width: width,
+                                    height: height,
+                                    semanticLabel: widget.legend.isEmpty
+                                        ? "Illustration"
+                                        : widget.legend,
+                                  ),
                                 ),
                               ),
                             ),
@@ -131,17 +138,20 @@ class _MySatImageState extends State<MySatImage> {
                                   child: Container(
                                       margin: EdgeInsets.all(16),
                                       padding: EdgeInsets.all(8.0),
+                                      // Dark enough for white text (WCAG AA).
                                       decoration: BoxDecoration(
-                                        color: SatStyle.lightBlueColor
-                                            .withValues(alpha: 0.9),
+                                        color: SatStyle.darkBlueColor
+                                            .withValues(alpha: 0.92),
                                         borderRadius:
                                             BorderRadius.circular(10.0),
                                       ),
-                                      child: SelectableText(widget.legend,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelLarge
-                                              ?.copyWith(color: Colors.white))))
+                                      child: ExcludeSemantics(
+                                          child: SelectableText(widget.legend,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .labelLarge
+                                                  ?.copyWith(
+                                                      color: Colors.white)))))
                           ],
                         )
                       : Text("Impossible de charger l'image"),

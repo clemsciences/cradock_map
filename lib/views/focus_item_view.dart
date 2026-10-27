@@ -6,7 +6,7 @@ import "package:cradock_map/ui/images/my_sat_image.dart";
 import "package:cradock_map/ui/images/sat_gallery.dart";
 import "package:cradock_map/ui/nav_bar.dart";
 import "package:cradock_map/ui/page_layout.dart";
-import "package:flutter/gestures.dart";
+import "package:cradock_map/ui/texts/text_link.dart";
 import "package:flutter/material.dart";
 import "package:go_router/go_router.dart";
 
@@ -35,68 +35,73 @@ class FocusItemView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
-    return Scaffold(
-      body: PageLayout(
-          scrollController: _scrollController,
-          child: Center(
-            child: SizedBox(
-              width: min(width, MAX_PAGE_WIDTH),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const NavBar(),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: SelectableText(
-                      focusItem.title,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.headlineLarge,
-                    ),
-                  ),
-                  if (focusItem.author != null)
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: SelectableText.rich(
-                          TextSpan(
-                              children: [
-                                const TextSpan(text: "par "),
-                                for (var (index, author)
-                                    in focusItem.author!.indexed) ...[
-                                  if (index > 0)
-                                    TextSpan(
-                                        text: index ==
-                                                focusItem.author!.length - 1
-                                            ? " et "
-                                            : ", "),
-                                  TextSpan(
-                                      text: author.normalizedName,
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          context.go(
-                                              AppRoutes.getAuthorItemRoute(
-                                                  author));
-                                        },
-                                      style: const TextStyle(
-                                          decoration: TextDecoration.underline,
-                                          color: Colors.blue)),
-                                ],
-                              ],
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineSmall
-                                  ?.copyWith(fontStyle: FontStyle.italic)),
-                          textAlign: TextAlign.end,
+    // Title of the browser tab (and of the page seen by search engines).
+    return Title(
+        title: "${focusItem.title} – Le voyage de Mme Cradock en Touraine",
+        color: Theme.of(context).colorScheme.primary,
+        child: Scaffold(
+          body: PageLayout(
+              scrollController: _scrollController,
+              child: Center(
+                child: SizedBox(
+                  width: min(width, MAX_PAGE_WIDTH),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const NavBar(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Semantics(
+                          header: true,
+                          child: SelectableText(
+                            focusItem.title,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.headlineLarge,
+                          ),
                         ),
                       ),
-                    ),
-                  for (var part in focusItem.parts) buildPart(context, part)
-                ],
-              ),
-            ),
-          )),
-    );
+                      if (focusItem.author != null)
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Builder(builder: (context) {
+                              final style = Theme.of(context)
+                                  .textTheme
+                                  .headlineSmall
+                                  ?.copyWith(fontStyle: FontStyle.italic);
+                              final authors = focusItem.author!;
+                              return Wrap(
+                                alignment: WrapAlignment.end,
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                children: [
+                                  Text("par ", style: style),
+                                  for (var (index, author)
+                                      in authors.indexed) ...[
+                                    if (index > 0)
+                                      Text(
+                                          index == authors.length - 1
+                                              ? " et "
+                                              : ", ",
+                                          style: style),
+                                    TextLink(
+                                        text: author.normalizedName,
+                                        style: style,
+                                        onPressed: () => context.go(
+                                            AppRoutes.getAuthorItemRoute(
+                                                author))),
+                                  ],
+                                ],
+                              );
+                            }),
+                          ),
+                        ),
+                      for (var part in focusItem.parts) buildPart(context, part)
+                    ],
+                  ),
+                ),
+              )),
+        ));
   }
 
   Widget _bodyText(BuildContext context, String text) {
@@ -122,9 +127,12 @@ class FocusItemView extends StatelessWidget {
                         top: compact ? 32 : 64,
                         bottom: 16,
                         right: 16),
-                    child: SelectableText(
-                      part.subtitle,
-                      style: Theme.of(context).textTheme.headlineMedium,
+                    child: Semantics(
+                      header: true,
+                      child: SelectableText(
+                        part.subtitle,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
                     ),
                   ),
                 ),
@@ -265,13 +273,29 @@ class FocusItemView extends StatelessWidget {
         ),
       PartType.gallery => LayoutBuilder(
           key: part.key,
-          builder: (context, constraints) => Container(
-            height: min(MAX_GALLERY_HEIGHT, constraints.maxWidth * 0.75),
+          builder: (context, constraints) => Padding(
             padding: compact ? EdgeInsets.zero : mainLeftPadding,
-            child: SatGallery(
-              assetNames: part.gallery!,
-              legend: part.legend,
-            ),
+            child: Column(children: [
+              SizedBox(
+                height: min(MAX_GALLERY_HEIGHT, constraints.maxWidth * 0.75),
+                child: SatGallery(
+                  assetNames: part.gallery!,
+                  legend: part.legend,
+                ),
+              ),
+              // Below the images, so that a long legend or enlarged text
+              // takes the room it needs.
+              if (part.legend?.isNotEmpty ?? false)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(56, 4, 56, 0),
+                  // Already the text alternative of each image.
+                  child: ExcludeSemantics(
+                    child: Text(part.legend!,
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodySmall),
+                  ),
+                ),
+            ]),
           ),
         ),
       PartType.navigation =>
@@ -284,21 +308,19 @@ class FocusItemView extends StatelessWidget {
                 left: 16.0 +
                     (compact ? 0 : MediaQuery.sizeOf(context).width * 0.10),
                 right: 16.0),
-            child: SelectableText.rich(
-              TextSpan(children: [
-                for (var item in focusItem.parts
-                    .where((item) => item.subtitle.isNotEmpty))
-                  TextSpan(
-                      text: "${item.subtitle}\n",
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          goToPart(context, item);
-                        },
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            decoration: TextDecoration.underline,
-                            color: Colors.blue,
-                          ))
-              ]),
+            child: Semantics(
+              label: "Sommaire",
+              container: true,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (var item in focusItem.parts
+                      .where((item) => item.subtitle.isNotEmpty))
+                    TextLink(
+                        text: item.subtitle,
+                        onPressed: () => goToPart(context, item)),
+                ],
+              ),
             ),
           ),
         ),
@@ -365,7 +387,9 @@ class FocusItemView extends StatelessWidget {
     if (targetContext != null) {
       Scrollable.ensureVisible(
         targetContext,
-        duration: const Duration(milliseconds: 500),
+        duration: MediaQuery.disableAnimationsOf(context)
+            ? Duration.zero
+            : const Duration(milliseconds: 500),
         curve: Curves.easeInOut,
       );
     }

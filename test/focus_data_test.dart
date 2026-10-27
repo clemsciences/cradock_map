@@ -52,8 +52,15 @@ void main() {
     }
   });
 
-  for (var size in const [Size(390, 844), Size(1400, 900)]) {
-    testWidgets("Every article lays out at ${size.width.toInt()} px",
+  for (var (size, textScale) in const [
+    (Size(390, 844), 1.0),
+    (Size(1400, 900), 1.0),
+    // WCAG 1.4.4: text enlarged to 200 %.
+    (Size(390, 844), 2.0),
+    (Size(1400, 900), 2.0),
+  ]) {
+    testWidgets(
+        "Every article lays out at ${size.width.toInt()} px, text x$textScale",
         (WidgetTester tester) async {
       tester.view.physicalSize = size;
       tester.view.devicePixelRatio = 1.0;
@@ -65,8 +72,11 @@ void main() {
               builder: (context, state) =>
                   FocusItemView(focusItem: item, focus: focusData)),
         ]);
-        await tester.pumpWidget(
-            MultiNotifier(child: MaterialApp.router(routerConfig: router)));
+        await tester.pumpWidget(MultiNotifier(
+            child: MediaQuery(
+                data: MediaQueryData(
+                    size: size, textScaler: TextScaler.linear(textScale)),
+                child: MaterialApp.router(routerConfig: router))));
         await tester.pump();
         expect(tester.takeException(), isNull, reason: item.title);
         await tester.pumpWidget(const SizedBox());
